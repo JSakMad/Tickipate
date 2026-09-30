@@ -1,0 +1,16 @@
+:root {
+  --paper: #f7f4ec;
+  --ink: #202a34;
+  --muted: #53616c;
+  --rule: #cdd3d5;
+  --accent: #285d76;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, sans-serif; line-height: 1.6; }
+main { max-width: 48rem; margin: 4rem auto; padding: 1.5rem; }
+h1 { font-family: Georgia, serif; font-size: 3rem; line-height: 1.2; }
+p { font-size: 1rem; }
+.intro { font-size: 1.25rem; }
+.research-label { color: var(--muted); border-top: 1px solid var(--rule); padding-top: 1rem; font-size: 0.875rem; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
