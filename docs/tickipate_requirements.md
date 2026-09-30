@@ -38,6 +38,7 @@ The core claim the product makes is narrow and testable: *"For this ticker and t
 | Data | Source | Notes |
 |---|---|---|
 | Earnings, IPO calendars; company EPS history | Finnhub free tier | 60 calls/min. Earnings calendar includes BMO/AMC session timing. |
+| Historical quarterly earnings dates and session labels | Alpha Vantage `EARNINGS` free endpoint | User-approved on September 30, 2026. Five-year target; 25 requests/day. Finnhub remains the upcoming calendar source. Budget is enforced across jobs; an initial 500-ticker backfill takes at least 20 days. Actual coverage remains source-dependent. |
 | FDA catalysts (PDUFA dates, AdComs) | pdufa.bio free read-only JSON API; Finnhub FDA committee calendar as a cross-check | pdufa.bio is independent, not an FDA product. Treat every date as provisional and confirm against the company's 8-K or press release where possible. |
 | FDA outcomes (historical) | FDA Drugs@FDA database | Official; used to label historical approval/CRL outcomes. |
 | FOMC schedule | federalreserve.gov FOMC calendar | Official. Statement time is 2:00 PM ET. |
@@ -67,7 +68,7 @@ The core claim the product makes is narrow and testable: *"For this ticker and t
 
 ### 6.1 Event timestamp normalization
 Every event is stored with the exact moment the information became public, not just a date:
-- Earnings: BMO → pre-market of that date; AMC → after close; unknown session → flagged, excluded from intraday windows.
+- Earnings: BMO → pre-market of that date; AMC → after close; unknown session → flagged, excluded from intraday windows. **Approved Phase 1 clarification:** when only a session label is available, store a labeled `session_anchor`: BMO at 09:29:59 Eastern; AMC one second after the NYSE close, including early closes. `exact_timestamp` remains unavailable and these events are excluded from intraday windows. An anchor is never an observed public-release timestamp and must not establish the Section 6.2 reference price. Non-trading dates are flagged without shifting the event to a different date. Conflicting source session labels produce unavailable timing and retain both observations.
 - FOMC: 2:00 PM ET statement. CPI/jobs: 8:30 AM ET.
 - Form 4: EDGAR filing acceptance timestamp.
 - Congressional: the public disclosure timestamp, **never** the underlying trade date.
@@ -251,7 +252,7 @@ Benchmark: Hack the North's approach of building a site around one strong idea r
 
 - **Macro consensus:** is a free consensus source acceptable if found, or is `surprise_basis = prior` fine for v1?
 - **FDA universe:** keep FDA limited to S&P 500 (fewer, weaker signals), or extend only the FDA module to a small-cap biotech list (e.g., XBI holdings), where decisions move stocks far more?
-- **History depth:** how many years of backtest history? Five years is a reasonable default for sample size vs. API budget.
+- **History depth:** five-year target, retained by user decision on September 30, 2026 after adding the free Alpha Vantage historical source. No minimum-sample, FDR, or reference-price guardrail is relaxed to compensate for unavailable data.
 - **Alert channel:** Telegram, email, or both?
 
 ---

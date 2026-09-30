@@ -1,0 +1,7 @@
+{
+  "symbol": "AAPL",
+  "quarterlyEarnings": [
+    {"reportedDate": "2025-07-31", "fiscalDateEnding": "2025-06-30", "reportTime": "post-market", "reportedEPS": "None"},
+    {"reportedDate": "2019-07-30", "fiscalDateEnding": "2019-06-30", "reportTime": "post-market"}
+  ]
+}
